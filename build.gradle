@@ -1,0 +1,75 @@
+
+buildscript {
+    ext {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+
+        kotlinVersion = '1.0.0'
+        vertxVersion = '3.2.1'
+        log4jVersion = '2.5'
+        gradleVersion = '2.5'
+        gsonVersion = '2.6.1'
+        hikaricpVersion = '2.4.3'
+
+        libs = [
+                kotlinLang: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+                kotlinPlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion",
+                logging: [
+                        "org.apache.logging.log4j:log4j:$log4jVersion",
+                        "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion",
+                        "org.apache.logging.log4j:log4j-core:$log4jVersion"
+                ],
+                gson:  "com.google.code.gson:gson:$gsonVersion",
+                hikaricp: "com.zaxxer:HikariCP:$hikaricpVersion",
+                vertx: [
+                        "io.vertx:vertx-web:$vertxVersion",
+                        "io.vertx:vertx-web-templ-thymeleaf:$vertxVersion"
+                ]
+        ]
+
+        wrapperDistUrl = "https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath libs.kotlinPlugin
+    }
+}
+
+allprojects {
+    group 'org.project'
+    version '1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile libs.kotlinLang,
+                libs.logging
+    }
+}
+
+
+
+
+
+
+
+//project('app') {
+//    task (name: 'run', dependsOn: ':common:build').doLast {
+//        println("Task: ${task.project.name}:${task.name}}")
+//    }
+//}

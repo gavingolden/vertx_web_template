@@ -1,0 +1,13 @@
+
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.js"></script>
+    <script src="/static/js/sample.js"></script>
+</head>
+
+<body>
+I have a message:
+<div th:text="${context.get('msg')}"></div>
+</body>
+</html>

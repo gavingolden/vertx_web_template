@@ -1,0 +1,16 @@
+
+apply plugin: 'application'
+
+// Application plugin: Driver class
+mainClassName = "servers.verticles.Webapp"
+
+
+dependencies {
+    compile libs.vertx
+}
+
+
+
+task wrapper(type: Wrapper) {
+    distributionUrl = wrapperDistUrl
+}

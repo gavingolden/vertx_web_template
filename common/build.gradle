@@ -1,0 +1,10 @@
+
+dependencies {
+    compile libs.gson,
+            libs.hikaricp
+}
+
+
+task wrapper(type: Wrapper) {
+    distributionUrl = wrapperDistUrl
+}
