@@ -1,7 +1,11 @@
 
 dependencies {
     compile libs.gson,
-            libs.hikaricp
+            libs.hikaricp,
+            libs.vertxCore,
+            libs.dbDriver,
+            libs.guava,
+            libs.kotliquery
 }
 
 

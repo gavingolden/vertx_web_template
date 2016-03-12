@@ -10,6 +10,10 @@ buildscript {
         gradleVersion = '2.5'
         gsonVersion = '2.6.1'
         hikaricpVersion = '2.4.3'
+        mariaDbVersion = '1.3.6'
+        guavaVersion = '19.0'
+        kotliqueryVersion = '1.0.1'
+        depAnalyzeVersion = '1.0.3'
 
         libs = [
                 kotlinLang: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
@@ -21,10 +25,16 @@ buildscript {
                 ],
                 gson:  "com.google.code.gson:gson:$gsonVersion",
                 hikaricp: "com.zaxxer:HikariCP:$hikaricpVersion",
-                vertx: [
+                vertxWeb: [
                         "io.vertx:vertx-web:$vertxVersion",
-                        "io.vertx:vertx-web-templ-thymeleaf:$vertxVersion"
-                ]
+                        "io.vertx:vertx-auth-common:$vertxVersion"
+                ],
+                vertxCore: "io.vertx:vertx-core:$vertxVersion",
+                thymeleaf: "io.vertx:vertx-web-templ-thymeleaf:$vertxVersion",
+                dbDriver: "org.mariadb.jdbc:mariadb-java-client:$mariaDbVersion",
+                guava: "com.google.guava:guava:$guavaVersion",
+                kotliquery: "com.github.seratch:kotliquery:$kotliqueryVersion",
+                depAnalyze: "ca.cutterslade.gradle:gradle-dependency-analyze:$depAnalyzeVersion"
         ]
 
         wrapperDistUrl = "https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
@@ -32,14 +42,19 @@ buildscript {
 
     repositories {
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
         classpath libs.kotlinPlugin
+        classpath libs.depAnalyze
     }
 }
 
 allprojects {
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+
     group 'org.project'
     version '1.0-SNAPSHOT'
 
@@ -49,11 +64,10 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'kotlin'
-
     repositories {
-        mavenCentral()
+        maven {
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
     }
 
     dependencies {
@@ -62,14 +76,8 @@ subprojects {
     }
 }
 
+apply plugin: 'ca.cutterslade.analyze'
 
-
-
-
-
-
-//project('app') {
-//    task (name: 'run', dependsOn: ':common:build').doLast {
-//        println("Task: ${task.project.name}:${task.name}}")
-//    }
-//}
+analyzeClassesDependencies {
+    justWarn = true
+}

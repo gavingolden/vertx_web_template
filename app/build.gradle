@@ -2,11 +2,13 @@
 apply plugin: 'application'
 
 // Application plugin: Driver class
-mainClassName = "servers.verticles.Webapp"
+mainClassName = "servers.verticles.WebAppVerticle"
 
 
 dependencies {
-    compile libs.vertx
+    compile libs.vertxWeb,
+            libs.thymeleaf,
+            project(':common')
 }
 
 

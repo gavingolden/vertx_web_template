@@ -1,13 +1,19 @@
 
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<!--THYMELEAF XHTML COMPLIANT HEADER-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.js"></script>
-    <script src="/static/js/sample.js"></script>
+    <script src="../static/js/sample.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/error.css"/>
 </head>
 
 <body>
-I have a message:
-<div th:text="${context.get('msg')}"></div>
+I have a message: Hey der
+<!--/*@thymesVar id="context" type=""*/-->
+<div th:text="${(context.get('user'))}"></div>
 </body>
 </html>

@@ -1,5 +1,5 @@
 "use strict";
 
 $(function() {
-    alert("Heyo!");
+    //alert("Heyo!");
 });
