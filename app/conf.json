@@ -1,9 +1,0 @@
-{
-  "config": {
-    "devMod": true,
-    "port": 8080,
-    "templCachingEnabled": false,
-    "showExceptionOnError": true,
-    "sessionTimeout": 3600000
-  }
-}

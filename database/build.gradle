@@ -1,0 +1,9 @@
+
+dependencies {
+    compile project(':common')
+}
+
+
+task wrapper(type: Wrapper) {
+    distributionUrl = wrapperDistUrl
+}

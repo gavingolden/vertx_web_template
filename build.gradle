@@ -12,8 +12,12 @@ buildscript {
         hikaricpVersion = '2.4.3'
         mariaDbVersion = '1.3.6'
         guavaVersion = '19.0'
-        kotliqueryVersion = '1.0.1'
+//        kotliqueryVersion = '1.0.1'
         depAnalyzeVersion = '1.0.3'
+        jetbrainsExposedVersion = '0.3.2'
+        bouncyCastleVersion = '1.54'
+        spekVersion = '0.1.195'
+        apacheLangVersion = '3.4'
 
         libs = [
                 kotlinLang: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
@@ -33,8 +37,16 @@ buildscript {
                 thymeleaf: "io.vertx:vertx-web-templ-thymeleaf:$vertxVersion",
                 dbDriver: "org.mariadb.jdbc:mariadb-java-client:$mariaDbVersion",
                 guava: "com.google.guava:guava:$guavaVersion",
-                kotliquery: "com.github.seratch:kotliquery:$kotliqueryVersion",
-                depAnalyze: "ca.cutterslade.gradle:gradle-dependency-analyze:$depAnalyzeVersion"
+                jetbrainsExposed: "org.jetbrains.exposed:exposed:$jetbrainsExposedVersion",
+                depAnalyze: "ca.cutterslade.gradle:gradle-dependency-analyze:$depAnalyzeVersion",
+                bouncyCastle: "org.bouncycastle:bcprov-jdk15on:$bouncyCastleVersion",
+                apacheLang: "org.apache.commons:commons-lang3:$apacheLangVersion"
+
+                //                kotliquery: "com.github.seratch:kotliquery:$kotliqueryVersion",
+        ]
+
+        testLibs = [
+                spek: "org.jetbrains.spek:spek:$spekVersion"
         ]
 
         wrapperDistUrl = "https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
@@ -57,27 +69,41 @@ allprojects {
 
     group 'org.project'
     version '1.0-SNAPSHOT'
-
-    repositories {
-        mavenCentral()
-    }
 }
 
 subprojects {
     repositories {
+        mavenCentral()
+
         maven {
             url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
+        maven {
+            url 'https://dl.bintray.com/kotlin/exposed'
+        }
+        maven {
+            url "http://repository.jetbrains.com/all"
         }
     }
 
     dependencies {
         compile libs.kotlinLang,
                 libs.logging
+        testCompile testLibs.spek
     }
 }
 
-apply plugin: 'ca.cutterslade.analyze'
-
-analyzeClassesDependencies {
-    justWarn = true
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.name == 'log4j') {
+            logger.warn("Skipping $requested dependency in favor of primary dependency version")
+            details.useTarget "org.apache.logging.log4j:log4j:$log4jVersion"
+        }
+    }
 }
+
+//apply plugin: 'ca.cutterslade.analyze'
+//
+//analyzeClassesDependencies {
+//    justWarn = true
+//}

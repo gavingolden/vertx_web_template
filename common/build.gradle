@@ -5,8 +5,11 @@ dependencies {
             libs.vertxCore,
             libs.dbDriver,
             libs.guava,
-            libs.kotliquery
+            libs.jetbrainsExposed,
+            libs.bouncyCastle,
+            libs.apacheLang
 }
+//            libs.kotliquery
 
 
 task wrapper(type: Wrapper) {
