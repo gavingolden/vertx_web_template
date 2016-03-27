@@ -5,5 +5,5 @@ import io.vertx.ext.web.RoutingContext
 
 class DummyFilterableHandler: AbstractFilterableHandler() {
 
-    override fun handleFiltered(ctx: RoutingContext) { }
+    override fun handleFiltered(ctx: RoutingContext) { ctx.next() }
 }

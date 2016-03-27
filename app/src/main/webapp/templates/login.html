@@ -1,22 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+<!--THYMELEAF XHTML COMPLIANT HEADER-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Login</title>
 </head>
 <body>
-<form>
-    <label for="username">
-        Username:
-        <input id="username" type="text"/>
-    </label>
+<form action="#" method="post">
+    <label th:for="username">Username:</label>
+    <input id="username" name="username" type="text"/>
 
-    <label for="password">
-        Password:
-        <input id="password" type="password"/>
-    </label>
+    <label for="password">Password:</label>
+    <input id="password" name="password" type="password"/>
 
-    <button>Login</button>
+    <input type="hidden" name="return_url" value="/app/app.html"/>
+
+    <button type="submit">Login</button>
 </form>
 
 </body>

@@ -1,6 +1,8 @@
 package routers
 
 import auth.AppAuthProvider
+import filters.NormalizeSuffixPreFilter
+import handlers.app.DummyFilterableHandler
 import io.vertx.core.Vertx
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.FormLoginHandler
@@ -13,10 +15,17 @@ object AppRouterFactory {
     fun getRouter(vertx: Vertx): Router {
         val router = Router.router(vertx)
 
+        router.route().handler(RedirectAuthHandler
+                .create(AppAuthProvider(), "login.html"))
 
-        router.route().handler(RedirectAuthHandler.create(AppAuthProvider(), "login.html"))
+        router.route().handler(FormLoginHandler
+                .create(AppAuthProvider())
+                .setDirectLoggedInOKURL("/app/app.html"))
 
-        router.route().handler(FormLoginHandler.create(AppAuthProvider()))
+        /**
+         * Normalize route suffix
+         */
+//        router.get().handler(DummyFilterableHandler().addPreFilter(NormalizeSuffixPreFilter(".html")))
 
         return router
     }

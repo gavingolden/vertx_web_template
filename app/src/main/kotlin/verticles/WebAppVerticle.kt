@@ -1,5 +1,6 @@
 package verticles
 
+import auth.AppAuthProvider
 import filters.NormalizeSuffixPreFilter
 import handlers.app.DummyFilterableHandler
 import io.vertx.core.Vertx
@@ -18,16 +19,16 @@ class WebAppVerticle : AbstractWebVerticle() {
     override fun implRouterConfig(router: Router): Router {
 
         /** ENABLE SESSION **/
+        // TODO -- should these be in app router only?
         router.route().handler(CookieHandler.create())
-
-        router.route().handler(
-                SessionHandler
-                        .create(LocalSessionStore.create(vertx))
-                        .setCookieHttpOnlyFlag(true)
-                        .setCookieSecureFlag(!devMode)
-                        .setNagHttps(true)
-                        .setSessionTimeout(sessionTimeout)
+        router.route().handler(SessionHandler
+                .create(LocalSessionStore.create(vertx))
+                .setCookieHttpOnlyFlag(true)
+                .setCookieSecureFlag(!devMode)
+                .setNagHttps(true)
+                .setSessionTimeout(sessionTimeout)
         )
+        router.route().handler(UserSessionHandler.create(AppAuthProvider()))
 
 
         /**
@@ -36,25 +37,21 @@ class WebAppVerticle : AbstractWebVerticle() {
          * (The matched part of the route path is removed from the request resource path once it is resolved
          * to a router)
          */
-        router.route("/static/*").handler(StaticHandler.create("src/main/resources/static").setCachingEnabled(templCachingEnabled))
-
-
-        /**
-         * Normalize route suffix
-         */
-        router.get().handler(DummyFilterableHandler().addPreFilter(NormalizeSuffixPreFilter(".html")))
+        router.route("/static/*").handler(StaticHandler
+                .create("src/main/resources/static")
+                .setCachingEnabled(templCachingEnabled))
 
         /**
          * Explicit index handler because the supposed default 'index.html' doesn't seem to be used in the source code...
          */
         router.route("/").handler {
-            it.reroute("/index.html");
+            it.reroute("/home.html");
         }
 
 
         router.mountSubRouter("/app", AppRouterFactory.getRouter(vertx))
 
-        router.mountSubRouter("/api", ApiRouterFactory.getRouter(vertx));
+        router.mountSubRouter("/api", ApiRouterFactory.getRouter(vertx))
 
 
         /**
