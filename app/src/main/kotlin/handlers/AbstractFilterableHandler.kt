@@ -1,11 +1,9 @@
 package handlers
 
-import objects.db.Db
 import filters.PostFilter
 import filters.PreFilter
 import io.vertx.core.Handler
 import io.vertx.ext.web.RoutingContext
-import kotliquery.Session
 import org.apache.logging.log4j.LogManager
 
 /**
@@ -16,7 +14,7 @@ abstract class AbstractFilterableHandler : Handler<RoutingContext> {
     private val preFilters = mutableListOf<PreFilter>();
     private val postFilters = mutableListOf<PostFilter>();
 
-    abstract fun handleFiltered(ctx: RoutingContext, dbSession: Session);
+    abstract fun handleFiltered(ctx: RoutingContext);
 
     fun addPreFilter(filter: PreFilter): AbstractFilterableHandler {
         this.preFilters.add(filter)
@@ -41,25 +39,15 @@ abstract class AbstractFilterableHandler : Handler<RoutingContext> {
     }
 
     final override fun handle(ctx: RoutingContext) {
-        var dbSession: Session? = null;
-        try {
-            dbSession = Db.source()
-            preFilters.forEach { it.execFilter(ctx); }
+        preFilters.forEach { it.execFilter(ctx); }
 
-            if (!ctx.response().ended())
-                handleFiltered(ctx, dbSession);
+        if (!ctx.response().ended())
+            handleFiltered(ctx);
 
-            postFilters.forEach { it.execFilter(ctx); }
-        }
-        catch (e: Error) {
-            dbSession?.close();
-            logger.fatal(e)
-            System.exit(1)
-        }
-        finally {
-            dbSession?.close();
-        }
+        postFilters.forEach { it.execFilter(ctx); }
     }
+
+
     companion object {
         private val logger = LogManager.getLogger(AbstractFilterableHandler::class)
     }

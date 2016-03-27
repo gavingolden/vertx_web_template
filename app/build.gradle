@@ -2,7 +2,7 @@
 apply plugin: 'application'
 
 // Application plugin: Driver class
-mainClassName = "servers.verticles.WebAppVerticle"
+mainClassName = "verticles.WebAppVerticle"
 
 
 dependencies {
@@ -10,8 +10,6 @@ dependencies {
             libs.thymeleaf,
             project(':common')
 }
-
-
 
 task wrapper(type: Wrapper) {
     distributionUrl = wrapperDistUrl

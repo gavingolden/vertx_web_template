@@ -46,13 +46,16 @@ class UserService(override val tx: Transaction) : TableService<User>() {
     }
 
 
-    fun authenticate(username: String, password: String): Boolean {
+    fun authenticate(username: String, password: String): User? {
         val owner = with(tx) {
             Users.select { Users.username eq username }.limit(1).firstOrNull().toInstance()
         }
-        return owner?.let {
-            PasswordService.verified(password, owner.password, owner.salt);
-        } ?: false
+        owner?.let {
+            if (PasswordService.verified(password, it.password, it.salt)) {
+                return it;
+            }
+        }
+        return null
     }
 
 

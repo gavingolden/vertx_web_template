@@ -3,6 +3,7 @@ dependencies {
     compile libs.gson,
             libs.hikaricp,
             libs.vertxCore,
+            libs.vertxAuth,
             libs.dbDriver,
             libs.guava,
             libs.jetbrainsExposed,

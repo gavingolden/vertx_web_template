@@ -1,8 +1,7 @@
 package verticles
 
-import auth.StandardUserAuthProvider
 import filters.NormalizeSuffixPreFilter
-import handlers.UserInfoHandler
+import handlers.app.DummyFilterableHandler
 import io.vertx.core.Vertx
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.*
@@ -10,6 +9,8 @@ import io.vertx.ext.web.sstore.LocalSessionStore
 import io.vertx.ext.web.templ.ThymeleafTemplateEngine
 import objects.configuration.ConfigurationPaths
 import org.apache.logging.log4j.LogManager
+import routers.ApiRouterFactory
+import routers.AppRouterFactory
 
 
 class WebAppVerticle : AbstractWebVerticle() {
@@ -28,10 +29,6 @@ class WebAppVerticle : AbstractWebVerticle() {
                         .setSessionTimeout(sessionTimeout)
         )
 
-        /**
-         * Common handler. Set context data that everything should have.
-         */
-//        router.route().handler(UserInfoHandler().addPreFilter(NormalizeSuffixPreFilter(".html")))
 
         /**
          * Include the route path in the resolve path so that includes have accurate auto-completion
@@ -41,6 +38,12 @@ class WebAppVerticle : AbstractWebVerticle() {
          */
         router.route("/static/*").handler(StaticHandler.create("src/main/resources/static").setCachingEnabled(templCachingEnabled))
 
+
+        /**
+         * Normalize route suffix
+         */
+        router.get().handler(DummyFilterableHandler().addPreFilter(NormalizeSuffixPreFilter(".html")))
+
         /**
          * Explicit index handler because the supposed default 'index.html' doesn't seem to be used in the source code...
          */
@@ -49,17 +52,10 @@ class WebAppVerticle : AbstractWebVerticle() {
         }
 
 
-        router.route("/app/*")
-                .handler(BasicAuthHandler.create(StandardUserAuthProvider()))
-                .handler {
-                    logger.info("In app")
-                    it.next()
-                }
+        router.mountSubRouter("/app", AppRouterFactory.getRouter(vertx))
 
-        router.post("/api/*").handler(BodyHandler.create());
+        router.mountSubRouter("/api", ApiRouterFactory.getRouter(vertx));
 
-        router.post("/api/newuser")
-                .handler(BodyHandler.create())
 
         /**
          * Everything that the static handler doesn't get should route through the template handler
