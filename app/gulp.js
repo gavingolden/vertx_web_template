@@ -55,9 +55,12 @@ gulp.task('clean', function() {
 
 gulp.task('watch', function () {
     livereload.listen();
-    gulp.watch(dirs.sources.less + '/**/*.less', ['less']);
-    gulp.watch(dirs.sources.css + '/**/*.css', ['css']);
-    gulp.watch(dirs.sources.templates + '/**/*.html', ['html']);
+    gulp.watch(dirs.sources.less + '/**/*.less', gulp.series('less'));
+    gulp.watch(dirs.sources.css + '/**/*.css', gulp.series('css'));
+    gulp.watch(dirs.sources.templates + '/**/*.html', gulp.series('html'));
 });
 
-gulp.task('default', ['clean', 'less', 'css', 'html', 'watch']);
+gulp.task('default',
+    gulp.series('clean',
+        gulp.parallel('less', 'css', 'html'), 'watch')
+);
