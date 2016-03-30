@@ -14,3 +14,17 @@ dependencies {
 task wrapper(type: Wrapper) {
     distributionUrl = wrapperDistUrl
 }
+
+/**
+ * This is uber hacky. Any -D flags passed to gradle aren't
+ * automatically given to the java process ... so we have
+ * a custom naming convention here to selectively pass on
+ * any gradle env args that begin with 'custom.'. Ya.
+ */
+tasks.withType(JavaExec) {
+    System.properties.each { k,v->
+        if (k.startsWith('custom.')) {
+            systemProperty k - "custom.", v
+        }
+    }
+}

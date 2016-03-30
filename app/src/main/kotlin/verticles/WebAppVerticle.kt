@@ -1,12 +1,10 @@
 package verticles
 
-import auth.AppAuthProvider
-import filters.NormalizeSuffixPreFilter
-import handlers.app.DummyFilterableHandler
 import io.vertx.core.Vertx
 import io.vertx.ext.web.Router
-import io.vertx.ext.web.handler.*
-import io.vertx.ext.web.sstore.LocalSessionStore
+import io.vertx.ext.web.handler.ErrorHandler
+import io.vertx.ext.web.handler.StaticHandler
+import io.vertx.ext.web.handler.TemplateHandler
 import io.vertx.ext.web.templ.ThymeleafTemplateEngine
 import objects.configuration.ConfigurationPaths
 import org.apache.logging.log4j.LogManager
@@ -17,19 +15,6 @@ import routers.AppRouterFactory
 class WebAppVerticle : AbstractWebVerticle() {
 
     override fun implRouterConfig(router: Router): Router {
-
-        /** ENABLE SESSION **/
-        // TODO -- should these be in app router only?
-        router.route().handler(CookieHandler.create())
-        router.route().handler(SessionHandler
-                .create(LocalSessionStore.create(vertx))
-                .setCookieHttpOnlyFlag(true)
-                .setCookieSecureFlag(!devMode)
-                .setNagHttps(true)
-                .setSessionTimeout(sessionTimeout)
-        )
-        router.route().handler(UserSessionHandler.create(AppAuthProvider()))
-
 
         /**
          * Include the route path in the resolve path so that includes have accurate auto-completion
@@ -57,7 +42,12 @@ class WebAppVerticle : AbstractWebVerticle() {
         /**
          * Everything that the static handler doesn't get should route through the template handler
          */
-        router.route().handler(TemplateHandler.create(ThymeleafTemplateEngine.create()));
+        val templateHandler = ThymeleafTemplateEngine.create();
+        if (!templCachingEnabled) {
+            templateHandler.thymeleafTemplateEngine.cacheManager = null
+        }
+        templateHandler.thymeleafTemplateEngine.cacheManager
+        router.route().handler(TemplateHandler.create(templateHandler));
 
 
         /**

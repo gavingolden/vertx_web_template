@@ -13,7 +13,7 @@ class NormalizeSuffixPreFilter(val suffix: String, override val stopOnResponseEn
      */
     override fun filter(ctx: RoutingContext) {
         val uri = ctx.request().uri();
-        if (uri.equals(delim)) return;
+        if (uri.equals(delim)) return; // TODO -- this would only handle root "/"
         val pre = uri.substringBeforeLast(delim)
         val last = uri.substringAfterLast(delim);
 

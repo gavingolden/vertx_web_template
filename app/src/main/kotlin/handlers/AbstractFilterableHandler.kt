@@ -39,12 +39,12 @@ abstract class AbstractFilterableHandler : Handler<RoutingContext> {
     }
 
     final override fun handle(ctx: RoutingContext) {
-        preFilters.forEach { it.execFilter(ctx); }
+        preFilters.forEach { if (!ctx.response().ended()) it.execFilter(ctx); }
 
         if (!ctx.response().ended())
             handleFiltered(ctx);
 
-        postFilters.forEach { it.execFilter(ctx); }
+        postFilters.forEach { if (!ctx.response().ended()) it.execFilter(ctx); }
     }
 
 

@@ -1,5 +1,6 @@
 package auth
 
+import extensions.notNull
 import io.vertx.core.AsyncResult
 import io.vertx.core.Future
 import io.vertx.core.Handler
@@ -17,19 +18,17 @@ class AppAuthProvider: AuthProvider {
     override fun authenticate(authInfo: JsonObject?, resultHandler: Handler<AsyncResult<User>>) {
         val username = authInfo?.getString(USER_KEY)
         val password = authInfo?.getString(PASSWORD_KEY)
+        var user: User? = null
 
-        username?.let {
-            password?.let {
-                Db.source().transaction {
-                    val userService = UserService(this);
-                    val authUser = userService.authenticate(username, password)
-
-                    authUser?.let {
-                        resultHandler.handle(Future.succeededFuture(authUser))
-                    }
-                }
+        if (username != null && password != null) {
+            Db.source().transaction {
+                val userService = UserService(this);
+                user = userService.authenticate(username, password)
             }
         }
-        resultHandler.handle(Future.failedFuture("Unauthenticated"))
+        if (notNull(user))
+            resultHandler.handle(Future.succeededFuture(user))
+        else
+            resultHandler.handle(Future.failedFuture("Unauthenticated"))
     }
 }

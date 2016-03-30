@@ -9,4 +9,12 @@ fun <T: Enum<*>> Class<T>.join(skipFirst: Int = 0, skipLast: Int = 0): String {
             .joinToString()
 }
 
+fun notNull(first: Any?): Boolean {
+    return first != null
+}
+
+fun notNull(first: Any?, second: Any?): Boolean {
+    return first != null && second != null
+}
+
 
