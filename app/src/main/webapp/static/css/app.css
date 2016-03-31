@@ -1,0 +1,14 @@
+.wide {
+  width: 100%;
+}
+.tall {
+  height: 100%;
+}
+.header {
+  width: 100%;
+  height: 200px;
+}
+.green {
+  background: seagreen;
+  color: #FFFFFF;
+}

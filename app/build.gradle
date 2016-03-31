@@ -23,8 +23,8 @@ task wrapper(type: Wrapper) {
  */
 tasks.withType(JavaExec) {
     System.properties.each { k,v->
-        if (k.startsWith('custom.')) {
-            systemProperty k - "custom.", v
+        if (k.startsWith('dev.')) {
+            systemProperty k - "dev.", v
         }
     }
 }

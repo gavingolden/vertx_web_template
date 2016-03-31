@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <!--<meta charset="UTF-8">-->
+    <meta charset="UTF-8"/>
     <title>App</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/app.css"/>
 </head>
 <body>
+<div class="header green" th:replace="templates/fragments/header.html :: header">
+    This is the static header
+</div>
 In the app
 </body>
 </html>

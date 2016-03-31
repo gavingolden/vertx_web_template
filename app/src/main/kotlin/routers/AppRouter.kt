@@ -7,40 +7,59 @@ import io.vertx.core.Vertx
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.*
 import io.vertx.ext.web.sstore.LocalSessionStore
+import objects.configuration.Config
+import objects.configuration.Keys
 import org.apache.logging.log4j.LogManager
+import util.Web
 
-object AppRouterFactory {
+object AppRouter {
     private val logger = LogManager.getLogger(ApiRouterFactory::class)
 
     fun getRouter(vertx: Vertx): Router {
         val authProvider = AppAuthProvider();
         val router = Router.router(vertx)
 
-        router.route().handler(BodyHandler.create())
+        router.post().handler(BodyHandler.create())
 
         /**
-         * All of these must be in the same router as the other session related handlers
+         * Session related handler must be in the same context/router where they are used
          */
         router.route().handler(CookieHandler.create())
+
         router.route().handler(SessionHandler
                 .create(LocalSessionStore.create(vertx))
                 .setCookieHttpOnlyFlag(true)
                 .setCookieSecureFlag(false)
-                .setNagHttps(true)
-//                .setSessionTimeout(sessionTimeout)
+                .setNagHttps(false)
+                .setSessionTimeout(Config.get<Long>(Keys.AppConfig.SESSION_TIMEOUT))
         )
         router.route().handler(UserSessionHandler.create(authProvider))
 
-        router.route("/").handler { it.reroute("/app/home.html") }
-
-        router.route("/doLogin").handler(FormLoginHandler
+        /**
+         * This must be placed before our redirect handler or our login
+         * actions will never be evaluated
+         */
+        router.post("/login").handler(FormLoginHandler
                 .create(authProvider)
                 .setDirectLoggedInOKURL("/app/home.html"))
 
+        /**
+         * Unauthenticated requests go back to jail
+         */
         router.route().handler(RedirectAuthHandler.create(authProvider, "/login.html"))
 
+
+        // Reroute to home
+        router.get("/").handler { it.reroute("/app/home.html") }
+
+        // Logout and redirect to root
+        router.post("/logout").handler {
+            it.session().destroy()
+            Web.doRedirect(it.response(), "/")
+        }
+
         // Normalize route suffix
-        router.route("/*").handler(DummyFilterableHandler().addPreFilter(NormalizeSuffixPreFilter(".html")))
+        router.get("/*").handler(DummyFilterableHandler().addPreFilter(NormalizeSuffixPreFilter(".html")))
 
         return router
     }
