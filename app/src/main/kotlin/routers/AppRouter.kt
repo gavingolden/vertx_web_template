@@ -55,7 +55,7 @@ object AppRouter {
         // Logout and redirect to root
         router.post("/logout").handler {
             it.session().destroy()
-            Web.doRedirect(it.response(), "/")
+            Web.doPostRedirect(it.response(), "/")
         }
 
         // Normalize route suffix
