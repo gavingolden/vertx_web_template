@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
     <title>FRAGMENTS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.js" type="javascript"></script>
     <link rel="stylesheet" type="text/css" href="../../static/css/app.css"/>
 </head>
 <body>
+
+
 <div th:fragment="header" class="header green">
     <form action="/app/logout" method="post">
         <button>Logout</button>
     </form>
 </div>
+
+
 </body>
 </html>

@@ -1,0 +1,36 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es5",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "module": "es6",
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "outDir": "../webapp/static/js/",
+    "sourceMap": true
+  },
+  "exclude": [
+    "typings/main.d",
+    "typings/main.d.ts",
+    "node_modules"
+  ],
+  "filesGlob": [
+    "./**/*.tsx",
+    "./typings/browser.d.ts",
+    "./typings/browser/**/*.d.ts",
+    "!typings/main/**",
+    "!typings/main.d.ts",
+    "!node_modules/**"
+  ],
+  "files": [
+    "./test.tsx",
+    "./typings/browser.d.ts",
+    "./typings/browser/ambient/react-dom/index.d.ts",
+    "./typings/browser/ambient/react/index.d.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": true
+  }
+}

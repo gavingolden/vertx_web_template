@@ -1,6 +1,8 @@
-"use strict";
 
-$(function() {
-    console.log("JS filed working");
-    //alert("Heyo!");
+function message() {
+    return "Hello world!"
+}
+
+$(() => {
+    console.log(message());
 });
