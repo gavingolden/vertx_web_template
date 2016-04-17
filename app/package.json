@@ -11,14 +11,18 @@
     "concat": "0.0.1-security",
     "del": "^2.2.0",
     "eslint": "^2.7.0",
+    "gulp": "git+https://git@github.com/gulpjs/gulp.git#4.0",
     "gulp-cli": "^1.2.1",
     "gulp-less": "^3.0.5",
     "gulp-livereload": "^3.8.1",
     "gulp-notify": "^2.2.0",
+    "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
     "path": "^0.12.7",
+    "ts-loader": "^0.8.2",
     "typescript": "^1.8.9",
-    "typings": "^0.7.12"
+    "typings": "^0.7.12",
+    "webpack-stream": "^3.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
