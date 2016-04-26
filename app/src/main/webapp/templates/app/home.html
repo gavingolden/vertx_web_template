@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <title>App</title>
     <link rel="stylesheet" type="text/css" href="../../static/css/app.css"/>
 </head>
 <body>
-<div class="header green" th:replace="templates/fragments/header.html :: header">
+
+<div id="app-home-header" class="header green" th:replace="templates/fragments/app/fragments.html :: __header">
     This is the static header
 </div>
-In the app
+
+<div id="app-home-body" th:replace="templates/fragments/app/fragments.html :: __body">
+    This is the static body
+</div>
 </body>
 </html>

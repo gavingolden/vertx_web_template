@@ -54,15 +54,23 @@
 	var ReactDOM = __webpack_require__(158);
 	var HelloMessage = (function (_super) {
 	    __extends(HelloMessage, _super);
-	    function HelloMessage() {
-	        _super.apply(this, arguments);
+	    function HelloMessage(props, context) {
+	        _super.call(this, props, context);
+	        this.ctls = {};
+	        this.state = {
+	            value: 'I have. messasges. for you'
+	        };
 	    }
+	    HelloMessage.prototype.handleChange = function (event) {
+	        this.setState({ value: event.target.value });
+	    };
 	    HelloMessage.prototype.render = function () {
-	        return (React.createElement("div", null, "Hello ", this.props.name));
+	        var _this = this;
+	        return (React.createElement("div", null, "Hello ", this.props.name, React.createElement("input", {ref: function (elm) { return _this.ctls.elm = elm; }, value: this.state.value, onChange: this.handleChange.bind(this)})));
 	    };
 	    return HelloMessage;
 	}(React.Component));
-	ReactDOM.render(React.createElement(HelloMessage, {name: "Gavin"}), document.getElementById('output'));
+	ReactDOM.render(React.createElement(HelloMessage, {name: "Gavin"}), document.getElementById('app-home-body'));
 
 
 /***/ },
