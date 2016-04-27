@@ -8,41 +8,51 @@ let gulp       = require( 'gulp' ),
     del        = require( 'del' ),
     fs         = require( 'fs' ),
     livereload = require( 'gulp-livereload' ),
-    webpack    = require( 'webpack-stream' );
+    webpack    = require( 'webpack-stream' ),
+    plumber    = require( 'gulp-plumber' );
 
 let DIRS = require( './buildConfig' ).DIRS;
+
+// gulp.src() with plumbing included
+gulp.plumbedSrc = function () {
+  return gulp.src.apply( gulp, arguments )
+             .pipe( plumber( ( err ) => {
+               notify.onError( "ERROR: " + err.plugin )( err ); // growl
+               gutil.beep();
+             } ) );
+};
 
 let webpackConfig = require( './webpack.config.js' ),
     tasks         = {
       typescript: function typescript () {
-        return gulp.src( [DIRS.sources.tsx + '/main.tsx'] )
-                   .on( 'error', gutil.log ) // Don't break on error, just log
+        return gulp.plumbedSrc( [DIRS.sources.tsx + '/main.tsx'] )
                    .pipe( webpack( webpackConfig ) )
+                   // .on( 'error', gutil.log ) // Don't break on error, just log
                    .pipe( gulp.dest( DIRS.sources.js ) )
                    .pipe( livereload() );
       },
       less:       function less () {
-        return gulp.src( DIRS.sources.less + '/**/*.less', { cwd: path.resolve( './' ) } )
+        return gulp.plumbedSrc( DIRS.sources.less + '/**/*.less', { cwd: path.resolve( './' ) } )
                    .pipe( gulp_less() )
-                   .on( 'error', gutil.log )
+                   // .on( 'error', gutil.log )
                    // .pipe(concat('all.css'))
                    .pipe( gulp.dest( DIRS.sources.css ) )
                    .pipe( livereload() );
       },
       css:        function css () {
-        return gulp.src( DIRS.sources.css + '/**/*.css', { cwd: path.resolve( './' ), base: DIRS.webappRoot } )
+        return gulp.plumbedSrc( DIRS.sources.css + '/**/*.css', { cwd: path.resolve( './' ), base: DIRS.webappRoot } )
                    // .pipe(concat('all.css'))
                    .pipe( gulp.dest( DIRS.output ) )
                    .pipe( livereload() );
       },
       js:         function js () {
-        return gulp.src( DIRS.sources.js + '/**/*.js*', { cwd: path.resolve( './' ), base: DIRS.webappRoot } )
+        return gulp.plumbedSrc( DIRS.sources.js + '/**/*.js*', { cwd: path.resolve( './' ), base: DIRS.webappRoot } )
                    .pipe( gulp.dest( DIRS.output ) )
                    .pipe( livereload() );
       },
       html:       function html () {
         var sources = [DIRS.sources.templates + '/**/*.html', DIRS.sources.staticHtml + '/**/*.html'];
-        return gulp.src( sources, { cwd: path.resolve( './' ), base: DIRS.webappRoot } )
+        return gulp.plumbedSrc( sources, { cwd: path.resolve( './' ), base: DIRS.webappRoot } )
                    .pipe( gulp.dest( DIRS.output ) )
                    .pipe( livereload() );
       },

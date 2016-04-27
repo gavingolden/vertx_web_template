@@ -20,11 +20,7 @@ class HelloMessage extends React.Component<HelloWorldProps, HelloWorldState> {
     };
   }
 
-  private ctls: {
-    elm?: HTMLInputElement;
-  } = {};
-
-  handleChange ( event ) {
+  private handleChange ( event ) {
     this.setState( {value: event.target.value} )
   }
 
@@ -32,7 +28,6 @@ class HelloMessage extends React.Component<HelloWorldProps, HelloWorldState> {
     return (
         <div>Hello {this.props.name}
           <input
-              ref={(elm) => this.ctls.elm = elm}
               value={this.state.value}
               onChange={this.handleChange.bind(this)}
           />

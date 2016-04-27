@@ -56,7 +56,6 @@
 	    __extends(HelloMessage, _super);
 	    function HelloMessage(props, context) {
 	        _super.call(this, props, context);
-	        this.ctls = {};
 	        this.state = {
 	            value: 'I have. messasges. for you'
 	        };
@@ -66,7 +65,7 @@
 	    };
 	    HelloMessage.prototype.render = function () {
 	        var _this = this;
-	        return (React.createElement("div", null, "Hello ", this.props.name, React.createElement("input", {ref: function (elm) { return _this.ctls.elm = elm; }, value: this.state.value, onChange: this.handleChange.bind(this)})));
+	        return (React.createElement("div", null, "Hello ", this.props.name, React.createElement("input", {ref: function (elm) { return _this.elm = elm; }, value: this.state.value, onChange: this.handleChange.bind(this)})));
 	    };
 	    return HelloMessage;
 	}(React.Component));
