@@ -1,15 +1,15 @@
 'use strict';
 
-let gulp       = require( 'gulp' ),
-    gutil      = require( 'gulp-util' ),
-    notify     = require( 'gulp-notify' ),
-    gulp_less  = require( 'gulp-less' ),
-    path       = require( 'path' ),
-    del        = require( 'del' ),
-    fs         = require( 'fs' ),
-    livereload = require( 'gulp-livereload' ),
-    webpack    = require( 'webpack-stream' ),
-    plumber    = require( 'gulp-plumber' );
+let gulp          = require( 'gulp' ),
+    gutil         = require( 'gulp-util' ),
+    notify        = require( 'gulp-notify' ),
+    gulp_less     = require( 'gulp-less' ),
+    path          = require( 'path' ),
+    del           = require( 'del' ),
+    fs            = require( 'fs' ),
+    livereload    = require( 'gulp-livereload' ),
+    webpackStream = require( 'webpack-stream' ),
+    plumber       = require( 'gulp-plumber' );
 
 let DIRS = require( './buildConfig' ).DIRS;
 
@@ -23,25 +23,22 @@ gulp.plumbedSrc = function () {
 };
 
 let webpackConfig = require( './webpack.config.js' ),
+    webpackCache  = require( 'webpack' ),
     tasks         = {
       typescript: function typescript () {
         return gulp.plumbedSrc( [DIRS.sources.tsx + '/main.tsx'] )
-                   .pipe( webpack( webpackConfig ) )
-                   // .on( 'error', gutil.log ) // Don't break on error, just log
+                   .pipe( webpackStream( webpackConfig, webpackCache ) )
                    .pipe( gulp.dest( DIRS.sources.js ) )
                    .pipe( livereload() );
       },
       less:       function less () {
         return gulp.plumbedSrc( DIRS.sources.less + '/**/*.less', { cwd: path.resolve( './' ) } )
                    .pipe( gulp_less() )
-                   // .on( 'error', gutil.log )
-                   // .pipe(concat('all.css'))
                    .pipe( gulp.dest( DIRS.sources.css ) )
                    .pipe( livereload() );
       },
       css:        function css () {
         return gulp.plumbedSrc( DIRS.sources.css + '/**/*.css', { cwd: path.resolve( './' ), base: DIRS.webappRoot } )
-                   // .pipe(concat('all.css'))
                    .pipe( gulp.dest( DIRS.output ) )
                    .pipe( livereload() );
       },
