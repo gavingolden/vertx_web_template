@@ -46,7 +46,7 @@
 
 	"use strict";
 	var Components = __webpack_require__(1);
-	var Mixins = __webpack_require__(34);
+	var Mixins = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./mixins\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var ReactDOM = __webpack_require__(35);
 	var React = __webpack_require__(2);
 	var $ = __webpack_require__(170);
@@ -3677,50 +3677,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var React = __webpack_require__(2);
-	/**
-	 * Provides a wrapper component that polls for data on intervals and passes the
-	 * result to the child component via the `data` property
-	 * @param TargetComponent The component to be wrapped
-	 * @returns {C} A wrapped component
-	 */
-	// TODO -- allow async
-	exports.IntervalMixer = function (TargetComponent) {
-	    // Name the class to help intellisense
-	    return (function (_super) {
-	        __extends(C, _super);
-	        function C() {
-	            _super.call(this);
-	            this.state = { data: undefined };
-	        }
-	        C.prototype.executeInterval = function () {
-	            this.setState({ data: this.props.onInterval() });
-	        };
-	        C.prototype.componentDidMount = function () {
-	            this.executeInterval();
-	            setInterval(this.executeInterval.bind(this), this.props.interval);
-	        };
-	        C.prototype.componentWillUnmount = function () {
-	            window.clearInterval(this.intervalRef);
-	        };
-	        C.prototype.render = function () {
-	            return (React.createElement(TargetComponent, {data: this.state.data}, this.props.children));
-	        };
-	        return C;
-	    }(React.Component));
-	};
-
-
-/***/ },
+/* 34 */,
 /* 35 */
 /***/ function(module, exports, __webpack_require__) {
 

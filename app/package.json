@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "description": "A vertx web project skeleton",
   "dependencies": {
+    "check-types": "^6.0.0",
     "jquery": "2.2.3",
     "react": "15.0.2",
     "react-dom": "15.0.2"

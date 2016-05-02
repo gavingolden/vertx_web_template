@@ -1,4 +1,4 @@
-import * as React from "react";
+import React = require("react");
 
 interface IntervalMixinProps {
   onInterval: Function; // Function to be executed every ...
