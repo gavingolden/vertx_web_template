@@ -1,4 +1,3 @@
-import org.apache.logging.log4j.LogManager
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.shouldEqual
 import org.jetbrains.spek.api.shouldNotEqual
@@ -6,7 +5,6 @@ import org.jetbrains.spek.api.shouldThrow
 import services.utility_services.PasswordService
 
 class EncryptionTest: Spek() { init {
-    val logger = LogManager.getLogger(EncryptionTest::class)
     val password = "Password123";
     given("The password $password") {
         on("salting and hashing using the SHA-256 algorithm") {

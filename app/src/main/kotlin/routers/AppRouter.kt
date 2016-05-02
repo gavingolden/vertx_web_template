@@ -31,7 +31,7 @@ object AppRouter {
                 .setCookieHttpOnlyFlag(true)
                 .setCookieSecureFlag(false)
                 .setNagHttps(false)
-                .setSessionTimeout(Config.get<Long>(Keys.AppConfig.SESSION_TIMEOUT))
+                .setSessionTimeout(Config.get(Keys.AppConfig.SESSION_TIMEOUT))
         )
         router.route().handler(UserSessionHandler.create(authProvider))
 

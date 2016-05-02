@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8"/>
     <title>App</title>
+
+    <div th:replace="templates/fragments/app/fragments.html :: __common_scripts"></div>
+
+    <script type="text/javascript" src="../../static/js/app.js"></script>
+
     <link rel="stylesheet" type="text/css" href="../../static/css/app.css"/>
 </head>
 <body>
@@ -11,8 +16,8 @@
     This is the static header
 </div>
 
-<div id="app-home-body" th:replace="templates/fragments/app/fragments.html :: __body">
-    This is the static body
-</div>
+<!--MOUNT POINT-->
+<div id="app-home-body"></div>
+
 </body>
 </html>

@@ -4,7 +4,7 @@ build/
 .idea/
 
 node_modules/
-app/src/main/tsx/typings/
+app/src/main/webapp/static/tsx/typings/
 
 *.class
 *.jar

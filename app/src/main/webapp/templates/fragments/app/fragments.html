@@ -2,14 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>FRAGMENTS</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.js" type="javascript"></script>
     <link rel="stylesheet" type="text/css" href="../../../static/css/app.css"/>
 </head>
 <body>
 
-<div th:fragment="__body" id="app-home-body">
-    <script type="text/javascript" src="../../../static/js/app.js"></script>
-</div>
+<!--OR... th:remove="tag" to remove the outer tag-->
+<th:block th:fragment="__common_scripts">
+    <script type="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js"></script>
+    <script type="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.2/react-dom.js"></script>
+    <script type="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.2/react.js"></script>
+</th:block>
 
 <div th:fragment="__header" class="header green">
     <form action="/app/logout" method="post">

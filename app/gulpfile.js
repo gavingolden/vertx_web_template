@@ -14,7 +14,7 @@ let gulp          = require( 'gulp' ),
 let DIRS = require( './buildConfig' ).DIRS;
 
 // gulp.src() with plumbing included
-gulp.plumbedSrc = function () {
+gulp.plumbedSrc = function() {
   return gulp.src.apply( gulp, arguments )
              .pipe( plumber( ( err ) => {
                notify.onError( "ERROR: " + err.plugin )( err ); // growl
@@ -25,44 +25,50 @@ gulp.plumbedSrc = function () {
 let webpackConfig = require( './webpack.config.js' ),
     webpackCache  = require( 'webpack' ),
     tasks         = {
-      typescript: function typescript () {
-        return gulp.plumbedSrc( [DIRS.sources.tsx + '/main.tsx'] )
+      typescript: function typescript() {
+        return gulp.plumbedSrc( [DIRS.sources.app] )
                    .pipe( webpackStream( webpackConfig, webpackCache ) )
-                   .pipe( gulp.dest( DIRS.sources.js ) )
+                   .pipe( gulp.dest( DIRS.directories.js ) )
                    .pipe( livereload() );
       },
-      less:       function less () {
-        return gulp.plumbedSrc( DIRS.sources.less + '/**/*.less', { cwd: path.resolve( './' ) } )
+      less: function less() {
+        return gulp.plumbedSrc( DIRS.directories.less + '/**/*.less', { cwd: path.resolve( './' ) } )
                    .pipe( gulp_less() )
-                   .pipe( gulp.dest( DIRS.sources.css ) )
+                   .pipe( gulp.dest( DIRS.directories.css ) )
                    .pipe( livereload() );
       },
-      css:        function css () {
-        return gulp.plumbedSrc( DIRS.sources.css + '/**/*.css', { cwd: path.resolve( './' ), base: DIRS.webappRoot } )
+      css: function css() {
+        return gulp.plumbedSrc( DIRS.directories.css + '/**/*.css', {
+          cwd: path.resolve( './' ),
+          base: DIRS.webappRoot
+        } )
                    .pipe( gulp.dest( DIRS.output ) )
                    .pipe( livereload() );
       },
-      js:         function js () {
-        return gulp.plumbedSrc( DIRS.sources.js + '/**/*.js*', { cwd: path.resolve( './' ), base: DIRS.webappRoot } )
+      js: function js() {
+        return gulp.plumbedSrc( DIRS.directories.js + '/**/*.js*', {
+          cwd: path.resolve( './' ),
+          base: DIRS.webappRoot
+        } )
                    .pipe( gulp.dest( DIRS.output ) )
                    .pipe( livereload() );
       },
-      html:       function html () {
-        var sources = [DIRS.sources.templates + '/**/*.html', DIRS.sources.staticHtml + '/**/*.html'];
+      html: function html() {
+        var sources = [DIRS.directories.templates + '/**/*.html', DIRS.directories.staticHtml + '/**/*.html'];
         return gulp.plumbedSrc( sources, { cwd: path.resolve( './' ), base: DIRS.webappRoot } )
                    .pipe( gulp.dest( DIRS.output ) )
                    .pipe( livereload() );
       },
-      clean:      function clean () {
+      clean: function clean() {
         return del( [DIRS.output + '/static', DIRS.output + '/templates'] );
       },
-      watch:      function watch () {
+      watch: function watch() {
         livereload.listen();
-        gulp.watch( DIRS.sources.less + '/**/*.less', tasks.less );
-        gulp.watch( DIRS.sources.css + '/**/*.css', tasks.css );
-        gulp.watch( DIRS.sources.js + '/**/*.js', tasks.js );
-        gulp.watch( DIRS.sources.templates + '/**/*.html', tasks.html );
-        gulp.watch( DIRS.sources.tsx + '/**/*.tsx', tasks.typescript );
+        gulp.watch( DIRS.directories.less + '/**/*.less', tasks.less );
+        gulp.watch( DIRS.directories.css + '/**/*.css', tasks.css );
+        gulp.watch( DIRS.directories.js + '/**/*.js', tasks.js );
+        gulp.watch( DIRS.directories.templates + '/**/*.html', tasks.html );
+        gulp.watch( DIRS.directories.tsx + '/**/*.tsx', tasks.typescript );
       }
     };
 

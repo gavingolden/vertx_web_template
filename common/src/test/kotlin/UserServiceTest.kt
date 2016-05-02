@@ -1,5 +1,4 @@
 import objects.db.Db
-import org.apache.logging.log4j.LogManager
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.shouldBeNull
 import org.jetbrains.spek.api.shouldEqual
@@ -10,7 +9,6 @@ import services.utility_services.RandDataService
 class UserServiceTest: Spek() { init {
 
     val firstUser = RandDataService.randomTestUser()
-    val logger = LogManager.getLogger(UserServiceTest::class)
 
     given("a user ${firstUser.firstname} ${firstUser.lastname}") {
         on("inserting into database") {

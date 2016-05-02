@@ -4,9 +4,9 @@
   "version": "0.0.1",
   "description": "A vertx web project skeleton",
   "dependencies": {
-    "elemental": "^0.5.14",
-    "react": "^0.14.8",
-    "react-dom": "^0.14.8"
+    "jquery": "2.2.3",
+    "react": "15.0.2",
+    "react-dom": "15.0.2"
   },
   "devDependencies": {
     "concat": "0.0.1-security",
@@ -23,7 +23,7 @@
     "path": "^0.12.7",
     "ts-loader": "^0.8.2",
     "typescript": "^1.8.9",
-    "typings": "^0.7.12",
+    "typings": "^0.8.1",
     "webpack": "^1.13.0",
     "webpack-stream": "^3.1.0"
   },
