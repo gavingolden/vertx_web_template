@@ -5,6 +5,7 @@ build/
 
 node_modules/
 app/src/main/webapp/static/tsx/typings/
+app/src/main/webapp/static/js/
 
 *.class
 *.jar
