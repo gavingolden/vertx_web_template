@@ -1,23 +1,58 @@
-import React = require("react");
+import { AppBar } from "material-ui";
+import { React } from "./libs";
+import PureRenderMixin = require("react-addons-pure-render-mixin");
 
-interface TimerProps {
-  data: number
+//TODO -- remove this after immutable is added to typings repo
+/// <reference path="../../../../../node_modules/immutable/dist/immutable.d.ts" />
+
+/**
+ * Convenience class that automatically implements {@link ComponentLifecycle#shouldComponentUpdate}
+ * 
+ * The child class must be pure: It will render the same output given the same state/props
+ * 
+ * Always use immutable data structures to make this worthwhile.
+ */
+export class PureRenderComponent<P, S> extends React.Component<P, S> {
+  constructor() {
+    super();
+  }
+
+  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind( this );
 }
-export class Timer extends React.Component<TimerProps, {}> {
+
+
+
+export class PureComp extends PureRenderComponent<{}, {name: string}> {
 
   constructor() {
     super();
-    console.log( 'Timer created' );
+    this.state = { name: "Initial" }
   }
 
-  static defaultProps: Object = {
-    data: 0
-  };
+  private onChange( event ) {
+    this.setState( { name: event.target.value } )
+  }
 
   render() {
     return (
-        <div>{this.props.data} seconds</div>
+        <input
+            onChange={this.onChange.bind(this)}
+            value={this.state.name}
+        />
     )
   }
 }
 
+export const Menu = () => {
+  let f = () => "Hey there!";
+  return (
+      <div>
+        {f()}
+        <AppBar
+            title="Title"
+            iconClassNameRight="muidocs-icon-navigation-expand-more"
+        />
+        <PureComp/>
+      </div>
+  )
+};

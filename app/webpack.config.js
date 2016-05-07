@@ -16,8 +16,9 @@ module.exports = {
    */
   externals: {
     jQuery: "jquery",
-    React: "react",
-    ReactDOM: "react-dom"
+    // TODO -- exclude in production
+    // React: "react",
+    //  ReactDOM: "react-dom",
   },
   devtool: 'source-map',
   cache: false,

@@ -68,7 +68,7 @@ let webpackConfig = require( './webpack.config.js' ),
         gulp.watch( DIRS.directories.css + '/**/*.css', tasks.css );
         gulp.watch( DIRS.directories.js + '/**/*.js', tasks.js );
         gulp.watch( DIRS.directories.templates + '/**/*.html', tasks.html );
-        gulp.watch( DIRS.directories.tsx + '/**/*.tsx', tasks.typescript );
+        gulp.watch( DIRS.directories.tsx + '/**/*.+(ts|tsx)', tasks.typescript );
       }
     };
 
